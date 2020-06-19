@@ -1,0 +1,269 @@
+[
+	{
+		"name": "Device",
+		"table" : "devices",
+		"item" : "device",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "Key",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Name",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Secret",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			},
+			{
+				"name": "Updated",
+				"type": "timestamp_now"
+			}
+		]
+	},
+	{
+		"name": "Location",
+		"table" : "locations",
+		"item" : "location",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "DeviceIndex",
+				"field_name": "device_index",
+				"type": "int"
+			},
+			{
+				"name": "Device",
+				"reference": "Device",
+				"type": "reference"
+			},
+			{
+				"name": "Latitude",
+				"type": "int"
+			},
+			{
+				"name": "Longitude",
+				"type": "int"
+			},
+			{
+				"name": "Accuracy",
+				"type": "int"
+			},
+			{
+				"name": "Altitude",
+				"type": "int"
+			},
+			{
+				"name": "Speed",
+				"type": "int"
+			},
+			{
+				"name": "Battery",
+				"type": "int"
+			},
+			{
+				"name": "DeviceTime",
+				"field_name": "device_time",
+				"type": "bigint"
+			},
+			{
+				"name": "BearingTo",
+				"type": "int",
+				"field_name": "bearing_to"
+			},
+			{
+				"name": "Wifi",
+				"maxlength": 2083,
+				"type": "string"
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			}
+		]
+	},
+	{
+		"name": "Photo",
+		"table" : "photos",
+		"item" : "photo",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "FileType",
+				"field_name" : "file_type",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Width",
+				"type": "int"
+			},
+			{
+				"name": "Height",
+				"type": "int"
+			},
+			{
+				"name": "Size",
+				"type": "int"
+			},
+			{
+				"name": "DeviceTime",
+				"field_name" : "device_time",
+				"type": "bigint"
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			},
+			{
+				"name": "Updated",
+				"type": "timestamp_now"
+			}
+		]
+	},
+	{
+		"name": "Video",
+		"table" : "videos",
+		"item" : "video",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "FileType",
+				"field_name" : "file_type",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Width",
+				"type": "int"
+			},
+			{
+				"name": "Height",
+				"type": "int"
+			},
+			{
+				"name": "Length",
+				"type": "int"
+			},
+			{
+				"name": "Size",
+				"type": "int"
+			},
+			{
+				"name": "DeviceTime",
+				"field_name" : "device_time",
+				"type": "bigint"
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			},
+			{
+				"name": "Updated",
+				"type": "timestamp_now"
+			}
+		]
+	},
+	{
+		"name": "Audio",
+		"table" : "audios",
+		"item" : "audio",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "FileType",
+				"field_name" : "file_type",
+				"maxlength": 100,
+				"type": "string"
+			},
+			{
+				"name": "Length",
+				"type": "int"
+			},
+			{
+				"name": "Size",
+				"type": "int"
+			},
+			{
+				"name": "DeviceTime",
+				"field_name" : "device_time",
+				"type": "bigint"
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			},
+			{
+				"name": "Updated",
+				"type": "timestamp_now"
+			}
+		]
+	},
+	{
+		"name": "Request",
+		"table" : "requests",
+		"item" : "request",
+		"fields": [
+			{
+				"name": "ID",
+				"field_name": "id",
+				"key": true,
+				"type": "uuid"
+			},
+			{
+				"name": "FromDevice",
+				"maxlength": 200,
+				"type": "string"
+			},
+			{
+				"name": "Data",
+				"maxlength": 2083,
+				"type": "string"
+			},
+			{
+				"name": "IP",
+				"type": "string",
+				"maxlength" : 200
+			},
+			{
+				"name": "Created",
+				"type": "timestamp_now"
+			}
+		]
+	}
+]
+

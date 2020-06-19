@@ -1,0 +1,272 @@
+{
+	"StructsData": [
+		{
+			"name": "Device",
+			"table": "devices",
+			"item": "device",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "Key",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Name",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Secret",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				},
+				{
+					"name": "Updated",
+					"type": "timestamp_now"
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"table": "locations",
+			"item": "location",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "DeviceIndex",
+					"field_name": "device_index",
+					"type": "int"
+				},
+				{
+					"name": "Device",
+					"type": "reference",
+					"reference": "Device"
+				},
+				{
+					"name": "Latitude",
+					"type": "int"
+				},
+				{
+					"name": "Longitude",
+					"type": "int"
+				},
+				{
+					"name": "Accuracy",
+					"type": "int"
+				},
+				{
+					"name": "Altitude",
+					"type": "int"
+				},
+				{
+					"name": "Speed",
+					"type": "int"
+				},
+				{
+					"name": "Battery",
+					"type": "int"
+				},
+				{
+					"name": "DeviceTime",
+					"field_name": "device_time",
+					"type": "bigint"
+				},
+				{
+					"name": "BearingTo",
+					"field_name": "bearing_to",
+					"type": "int"
+				},
+				{
+					"name": "Wifi",
+					"type": "string",
+					"maxlength": 2083
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"table": "photos",
+			"item": "photo",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "FileType",
+					"field_name": "file_type",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Width",
+					"type": "int"
+				},
+				{
+					"name": "Height",
+					"type": "int"
+				},
+				{
+					"name": "Size",
+					"type": "int"
+				},
+				{
+					"name": "DeviceTime",
+					"field_name": "device_time",
+					"type": "bigint"
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				},
+				{
+					"name": "Updated",
+					"type": "timestamp_now"
+				}
+			]
+		},
+		{
+			"name": "Video",
+			"table": "videos",
+			"item": "video",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "FileType",
+					"field_name": "file_type",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Width",
+					"type": "int"
+				},
+				{
+					"name": "Height",
+					"type": "int"
+				},
+				{
+					"name": "Length",
+					"type": "int"
+				},
+				{
+					"name": "Size",
+					"type": "int"
+				},
+				{
+					"name": "DeviceTime",
+					"field_name": "device_time",
+					"type": "bigint"
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				},
+				{
+					"name": "Updated",
+					"type": "timestamp_now"
+				}
+			]
+		},
+		{
+			"name": "Audio",
+			"table": "audios",
+			"item": "audio",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "FileType",
+					"field_name": "file_type",
+					"type": "string",
+					"maxlength": 100
+				},
+				{
+					"name": "Length",
+					"type": "int"
+				},
+				{
+					"name": "Size",
+					"type": "int"
+				},
+				{
+					"name": "DeviceTime",
+					"field_name": "device_time",
+					"type": "bigint"
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				},
+				{
+					"name": "Updated",
+					"type": "timestamp_now"
+				}
+			]
+		},
+		{
+			"name": "Request",
+			"table": "requests",
+			"item": "request",
+			"fields": [
+				{
+					"name": "ID",
+					"field_name": "id",
+					"key": true,
+					"type": "uuid"
+				},
+				{
+					"name": "FromDevice",
+					"type": "string",
+					"maxlength": 200
+				},
+				{
+					"name": "Data",
+					"type": "string",
+					"maxlength": 2083
+				},
+				{
+					"name": "IP",
+					"type": "string",
+					"maxlength": 200
+				},
+				{
+					"name": "Created",
+					"type": "timestamp_now"
+				}
+			]
+		}
+	],
+	"CodeTemplatePath": "/home/kastro/go/src/github.com/jempe/db_code_generator/code_templates",
+	"DBType": "boltdb"
+}
