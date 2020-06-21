@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -136,7 +137,16 @@ func main() {
 		// Check if certificate and key files exist
 
 		if !utils.Exists(serverCertFile) || !utils.Exists(serverKeyFile) {
+
+			// Create script to generate certificates and print message asking user to execute it
 			certificateGenerator := configPath + "/generate_cert.sh"
+
+			generateCertScript := []byte("#!/bin/bash\n\nGOPICAM_CONFIG_FOLDER=$( dirname \"${BASH_SOURCE[0]}\" )\n\nopenssl genrsa -out $GOPICAM_CONFIG_FOLDER/server.key 2048\n\nopenssl req -new -x509 -sha256 -key $GOPICAM_CONFIG_FOLDER/server.key -out $GOPICAM_CONFIG_FOLDER/server.crt -days 3650\n")
+			generateScriptErr := ioutil.WriteFile(certificateGenerator, generateCertScript, 0700)
+
+			if generateScriptErr != nil {
+				logAndExit(generateScriptErr.Error())
+			}
 
 			logAndExit("Certificate or key files don't exist, run the script " + certificateGenerator + " to create them. You can also use the -insecure flag to run the server without HTTPS")
 		}
