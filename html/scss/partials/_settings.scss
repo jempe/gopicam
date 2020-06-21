@@ -1,0 +1,47 @@
+// global variables
+$dark_bg: #320E3B;
+$light_text_color: #DDFBD2;
+$text_field_bg: #BCEDF6;
+$font_size: 16px;
+$font_color: #333;
+$error_color: #ff7473;
+$text_color: #344c74;
+$border_radius: 10px;
+$border_color: #e6e6e6;
+$links_color: #39527b;
+$button_text_color: white;
+$button_bg: #4C2A85;
+$button_border_radius:3px;
+$danger_bg: red;
+$danger_text: white;
+
+// regular font family
+@mixin regular_font {
+	font-family: 'open_sanslight';
+}
+
+// regular font family
+@mixin bold_font {
+	font-family: 'open_regular';
+}
+
+// signin input
+@mixin sign_in_input {
+	font-family: 'open_sanslight';
+}
+
+// icon font
+@mixin icon_font {
+	font-family: 'Material Icons';
+}
+
+
+// drop shadow
+@mixin drop_shadow {
+	box-shadow: 1px 2px 6px #666;
+}
+
+// overlay {
+@mixin overlay {
+	background-color: rgba(0, 0, 0, 0.3);
+}

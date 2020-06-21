@@ -2,8 +2,32 @@
 <html>
 	<head>
 		<title>GoPiCam</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script>
+			document.write('<link rel="stylesheet" href="/css/style.css?v=' + new Date().getTime() + '" />');
+			document.write('<script src="/js/gopicam.js" async><' + '/script>');
+		
+		</script>
 	</head>
 	<body>
-
+		<div class="login_popup popup">
+			<div class="overlay"></div>
+			<div class="login_form_container">
+				<!--<button class="close_button" onclick="close_popup(this)">×</button>-->
+				<form id="login_form" action="/api/login" onsubmit="return submit_login_form(this);">
+					<div>
+						<label for="username">Username</label>
+						<input id="username" name="username" type="text" required />
+					</div>	
+					<div>
+						<label for="password">Password</label>
+						<input id="password" name="password" type="password" required />
+					</div>
+					<div>
+						<button type="submit" >Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</body>
 </html>

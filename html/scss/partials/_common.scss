@@ -1,0 +1,131 @@
+@font-face {
+	@include regular_font;
+	src: url('/fonts/OpenSans-Light-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	@include bold_font;
+	src: url('/fonts/OpenSans-Regular-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+@font-face {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/MaterialIcons-Regular.woff') format('woff');
+}
+
+
+* {
+	box-sizing: border-box;
+	outline:none;
+}
+body, html {
+	@include regular_font;
+	color:$text_color;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	letter-spacing: 2px;
+	font-weight: normal;
+}
+
+button {
+	padding:0.5em 3em;
+	font-size:0.9rem;
+	border-radius:$button_border_radius;
+}
+
+a {
+	text-decoration:none;
+	color:$links_color;
+}
+
+// common classes
+.error {
+	color: $error_color;
+}
+
+.icon {
+	@include icon_font;
+	font-style:normal;
+}
+
+header i.icon {
+	font-size: 36px;
+}
+
+span.bubble {
+	position: absolute;
+	border-radius: 50%;
+	background: $danger_bg;
+	border: solid 2px pink;
+	width: 20px;
+	height: 20px;
+	right: -6px;
+	color: white;
+	bottom: 0;
+	font-size: 12px;
+	font-family: sans-serif;
+	line-height: 17px;
+	font-weight: bold;
+}
+button[type='submit'], input[type='submit'] {
+	padding:0.5rem 1rem;
+	color:$button_text_color;
+	background:$button_bg;
+	border: none;
+	font-size: 1rem;
+	@include bold_font;
+}
+input {
+	background: $text_field_bg;
+	border: none;
+	border-radius: $button_border_radius;
+	font-family: inherit;
+	padding: 5px 10px;
+}
+button.close_button {
+	border: none;
+	background: transparent;
+	padding: 0;
+	font-size: 2em;
+	line-height: 0.8;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	color: $light_text_color;
+}
+
+// size classes
+.full {
+	width:100%;
+}
+.half {
+	width:50%;
+}
+.third {
+	width:33%;
+}
+.two_thirds {
+	width:66%;
+}
+
+main {
+	display:flex;
+	flex-wrap:wrap;
+}
+
+//forms
+label.required:after {
+	content: "*";
+}
