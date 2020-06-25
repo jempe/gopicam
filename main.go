@@ -11,10 +11,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/alexedwards/scs"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jempe/gopicam/db"
+	"github.com/jempe/gopicam/handlers"
 	"github.com/jempe/gopicam/utils"
 	"github.com/jempe/gopicam/validator"
 )
@@ -24,10 +27,6 @@ var resetAdmin = flag.Bool("reset", false, "Reset admin username and password")
 var showHelp = flag.Bool("help", false, "Show Help")
 var insecureServer = flag.Bool("insecure", false, "Run web server without HTTPS")
 var port = flag.Int("port", 443, "Web Server Port")
-
-type CamServer struct {
-	Db *db.DB
-}
 
 func main() {
 	flag.Parse()
@@ -65,6 +64,13 @@ func main() {
 	database := &db.DB{Path: dbPath}
 
 	err := database.InitDb()
+
+	sessionManager := scs.New()
+	sessionManager.IdleTimeout = 20 * time.Minute
+	sessionManager.Cookie.HttpOnly = true
+	sessionManager.Cookie.Persist = true
+	sessionManager.Cookie.SameSite = http.SameSiteStrictMode
+	sessionManager.Cookie.Secure = !*insecureServer
 
 	if err != nil {
 		logAndExit("Couldn't create the DB")
@@ -121,8 +127,12 @@ func main() {
 		// Save Username and password
 	}
 
+	srv := &handlers.Server{Db: database, Sessions: sessionManager}
+
 	// Handler to serve HTML Files
-	http.Handle("/", http.FileServer(http.Dir("html/")))
+	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir("html/")))
+	mux.HandleFunc("/api/login", srv.LoginHandler)
 
 	// Setup Web Server
 
@@ -157,9 +167,9 @@ func main() {
 	//Start Web Server
 
 	if *insecureServer {
-		panic(http.ListenAndServe(":"+serverPort, nil))
+		panic(http.ListenAndServe(":"+serverPort, sessionManager.LoadAndSave(mux)))
 	} else {
-		panic(http.ListenAndServeTLS(":"+serverPort, serverCertFile, serverKeyFile, nil))
+		panic(http.ListenAndServeTLS(":"+serverPort, serverCertFile, serverKeyFile, sessionManager.LoadAndSave(mux)))
 	}
 }
 
