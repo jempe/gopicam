@@ -70,7 +70,7 @@ func main() {
 	sessionManager.Cookie.HttpOnly = true
 	sessionManager.Cookie.Persist = true
 	sessionManager.Cookie.SameSite = http.SameSiteStrictMode
-	sessionManager.Cookie.Secure = !*insecureServer
+	sessionManager.Cookie.Secure = true
 
 	if err != nil {
 		logAndExit("Couldn't create the DB")
@@ -133,6 +133,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("html/")))
 	mux.HandleFunc("/api/login", srv.LoginHandler)
+	mux.HandleFunc("/api/preview", srv.PreviewHandler)
 
 	// Setup Web Server
 

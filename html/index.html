@@ -14,7 +14,7 @@
 			<div class="overlay"></div>
 			<div class="login_form_container">
 				<!--<button class="close_button" onclick="close_popup(this)">×</button>-->
-				<form id="login_form" action="/api/login" onsubmit="return submit_login_form(this);">
+				<form id="login_form" action="/api/login" method="POST" onsubmit="return submit_login_form();">
 					<div>
 						<label for="username">Username</label>
 						<input id="username" name="username" type="text" required />

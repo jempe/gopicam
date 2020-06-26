@@ -21,6 +21,11 @@ function handleResponse(response)
 	} 
 	else
 	{
+		if(response.status == 401)
+		{
+			show_login();
+		}
+
 		return Promise.reject(new Error(response.statusText))
 	}
 }
@@ -46,11 +51,7 @@ function get_form_data(form)
 	{
 		let field = fields[field_index];
 
-		if(field.name != "gorilla.csrf.Token")
-		{
-			form_data[field.name] = field.value;
-
-		}
+		form_data[field.name] = field.value;
 	}
 
 	return form_data;
@@ -85,31 +86,64 @@ function show_login()
 	document.body.classList.add("show_login");
 }
 
+// hide login form
+function hide_login()
+{
+	document.body.classList.remove("show_login");
+}
+
 
 //submit login form
 function submit_login_form(form)
 {
 	document.querySelector(".login_form_container").classList.remove("error");
 
-	let form_data = get_form_data(form);
-
-	console.log(form_data);
-	// todo send data to server and process response
-
-	//if can't login
-	if(document.querySelectorAll("#login_form span.error").length == 0)
-	{
-		document.getElementById("login_form").insertAdjacentHTML('afterBegin', '<span class="error">Wrong username or password</span>');
+	let loginRequest = { 
+		"cache": "no-store",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		"method" : "POST",
+		"body" : "username=" + encodeURIComponent(document.getElementById("username").value) + "&password=" + encodeURIComponent(document.getElementById("password").value)
 	}
 
-	setTimeout(function()
+	fetch("/api/login" , loginRequest).then(handleResponse).then(handleJson).then(function(data)
 	{
-		document.querySelector(".login_form_container").classList.add("error");
-	}, 100);
+		if(data.access != "granted")
+		{
+			//if can't login
+			if(document.querySelectorAll("#login_form span.error").length == 0)
+			{
+				document.getElementById("login_form").insertAdjacentHTML('afterBegin', '<span class="error">Wrong username or password</span>');
+			}
 
+			document.querySelector(".login_form_container").classList.add("error");
+		}
+		else
+		{
+			hide_login();
+		}
+
+	}).catch(function(error)
+	{
+		log_error('Request failed' +  error);
+	});
 
 	return false;
 }
 
+function get_preview()
+{
+	let previewRequest = requestInit;
+	previewRequest["method"] = "GET";
 
-setTimeout(show_login, 100);
+	fetch("/api/preview", previewRequest).then(handleResponse).then(handleJson).then(function(data)
+	{
+
+	}).catch(function(error)
+	{
+		log_error('Request failed' +  error);
+	});
+}
+
+get_preview();

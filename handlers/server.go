@@ -75,7 +75,21 @@ func (srv *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintln(w, string(responseJSON))
+}
 
+// handler of the Preview image
+func (srv *Server) PreviewHandler(w http.ResponseWriter, r *http.Request) {
+	setSecureHeaders(w, "json")
+
+	if r.Method != http.MethodGet {
+		returnCode405(w, r)
+		return
+	}
+
+	if srv.Sessions.GetString(r.Context(), "username") != string(srv.Db.GetConfigValue("username")) {
+		returnCode401(w, r)
+		return
+	}
 }
 
 func returnCode400(w http.ResponseWriter, r *http.Request) {
