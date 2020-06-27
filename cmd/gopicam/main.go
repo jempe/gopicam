@@ -16,10 +16,10 @@ import (
 	"github.com/alexedwards/scs"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/jempe/gopicam/db"
-	"github.com/jempe/gopicam/handlers"
-	"github.com/jempe/gopicam/utils"
-	"github.com/jempe/gopicam/validator"
+	"github.com/jempe/gopicam/pkg/db"
+	"github.com/jempe/gopicam/pkg/handlers"
+	"github.com/jempe/gopicam/pkg/utils"
+	"github.com/jempe/gopicam/pkg/validator"
 )
 
 var configPathFlag = flag.String("config", "", "Define the path of config folder")

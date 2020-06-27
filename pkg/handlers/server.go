@@ -9,7 +9,7 @@ import (
 	"github.com/alexedwards/scs"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/jempe/gopicam/db"
+	"github.com/jempe/gopicam/pkg/db"
 )
 
 type Server struct {
