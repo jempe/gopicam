@@ -185,6 +185,8 @@ func main() {
 
 	//Start Web Server
 
+	go camController.StartRaspiMJPEG()
+
 	if *insecureServer {
 		panic(http.ListenAndServe(":"+serverPort, sessionManager.LoadAndSave(mux)))
 	} else {

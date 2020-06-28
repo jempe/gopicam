@@ -1,10 +1,16 @@
 package camera
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
+	"regexp"
+	"strings"
 
 	"github.com/jempe/gopicam/pkg/utils"
 )
@@ -81,4 +87,56 @@ func (camController *CamController) GetPreview() (previewImage string, status st
 	status = string(statusContent)
 
 	return
+}
+
+// Start raspimjpeg
+func (camController *CamController) StartRaspiMJPEG() {
+	camController.KillRaspiMJPEG()
+
+	cmd := exec.Command(camController.ConfigFolder + "/bin/raspimjpeg")
+	raspiMJPEGOutput, err := cmd.StdoutPipe()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
+	}
+
+	for {
+		scanner := bufio.NewScanner(raspiMJPEGOutput)
+		for scanner.Scan() {
+			fmt.Println(scanner.Text()) // Println will add back the final '\n'
+		}
+	}
+
+	if err := cmd.Wait(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Kill raspimjpeg
+func (camController *CamController) KillRaspiMJPEG() {
+	cmd := exec.Command("ps")
+	log.Printf("Search RaspiMJPEG processes")
+	stdoutStderr, err := cmd.CombinedOutput()
+
+	if err == nil {
+		psLineList := strings.Split(string(stdoutStderr), "\n")
+
+		for _, psLine := range psLineList {
+			if strings.Contains(psLine, "raspimjpeg") {
+				pidRegex := regexp.MustCompile(`[0-9]*`)
+				pid := pidRegex.FindString(strings.TrimLeft(psLine, " "))
+
+				killCmd := exec.Command("kill", "-9", pid)
+				log.Println("Killing process", pid)
+				err := killCmd.Run()
+				if err != nil {
+					log.Println("Command finished with error:", err)
+				}
+			}
+		}
+	}
 }
