@@ -9,12 +9,21 @@ import (
 	"github.com/alexedwards/scs"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/jempe/gopicam/pkg/camera"
 	"github.com/jempe/gopicam/pkg/db"
 )
 
 type Server struct {
-	Db       *db.DB
-	Sessions *scs.SessionManager
+	Db            *db.DB
+	Sessions      *scs.SessionManager
+	LogError      *log.Logger
+	LogInfo       *log.Logger
+	CamController *camera.CamController
+}
+
+type PreviewResponse struct {
+	Image  string `json:"image"`
+	Status string `json:"status"`
 }
 
 func setSecureHeaders(w http.ResponseWriter, contentType string) {
@@ -44,12 +53,12 @@ func (srv *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// parse Body Data
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		srv.LogError.Println(err)
 	}
 
 	if r.PostForm.Get("username") == string(srv.Db.GetConfigValue("username")) {
 
-		log.Println("Login User Found")
+		srv.LogInfo.Println("Login User Found")
 
 		err = bcrypt.CompareHashAndPassword(srv.Db.GetConfigValue("password"), []byte(r.PostForm.Get("password")))
 
@@ -71,7 +80,7 @@ func (srv *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
-		log.Println(err)
+		srv.LogError.Println(err)
 	}
 
 	fmt.Fprintln(w, string(responseJSON))
@@ -90,6 +99,25 @@ func (srv *Server) PreviewHandler(w http.ResponseWriter, r *http.Request) {
 		returnCode401(w, r)
 		return
 	}
+
+	// initialize server response
+	var response PreviewResponse
+
+	image, status, err := srv.CamController.GetPreview()
+
+	if err != nil {
+		srv.LogError.Println(err.Error())
+	}
+
+	response.Image = image
+	response.Status = status
+
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		srv.LogError.Println(err)
+	}
+
+	fmt.Fprintln(w, string(responseJSON))
 }
 
 func returnCode400(w http.ResponseWriter, r *http.Request) {

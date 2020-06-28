@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"encoding/base64"
+	"fmt"
+	"net/http"
 	"os"
 )
 
@@ -20,4 +23,13 @@ func IsDirectory(file string) bool {
 		return true
 	}
 	return false
+}
+
+// Base64 encode
+func Base64Encode(content []byte) string {
+	mimeType := http.DetectContentType(content)
+
+	encodedContent := base64.StdEncoding.EncodeToString(content)
+
+	return fmt.Sprintf("data:%s;base64,%s", mimeType, encodedContent)
 }

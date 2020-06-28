@@ -16,6 +16,7 @@ import (
 	"github.com/alexedwards/scs"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/jempe/gopicam/pkg/camera"
 	"github.com/jempe/gopicam/pkg/db"
 	"github.com/jempe/gopicam/pkg/handlers"
 	"github.com/jempe/gopicam/pkg/utils"
@@ -28,7 +29,14 @@ var showHelp = flag.Bool("help", false, "Show Help")
 var insecureServer = flag.Bool("insecure", false, "Run web server without HTTPS")
 var port = flag.Int("port", 443, "Web Server Port")
 
+var logError *log.Logger
+var logInfo *log.Logger
+
 func main() {
+	// Initialize loggers
+	logError = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	logInfo = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+
 	flag.Parse()
 
 	// if help argument is present show flag Defaults
@@ -127,7 +135,17 @@ func main() {
 		// Save Username and password
 	}
 
-	srv := &handlers.Server{Db: database, Sessions: sessionManager}
+	// declare camera controller
+	camController := &camera.CamController{ConfigFolder: configPath}
+
+	// Initialize Camera Controller to create Required folders for preview
+	camError := camController.Init()
+
+	if camError != nil {
+		logAndExit(camError.Error())
+	}
+
+	srv := &handlers.Server{Db: database, Sessions: sessionManager, LogError: logError, LogInfo: logInfo, CamController: camController}
 
 	// Handler to serve HTML Files
 	mux := http.NewServeMux()
@@ -194,7 +212,7 @@ func simpleShell(question string) (response string, err error) {
 
 // Print error message and exit
 func logAndExit(message string) {
-	log.Println(message)
+	logError.Println(message)
 	os.Exit(1)
 }
 
@@ -214,5 +232,5 @@ func showLocalIPs(port string, protocol string) {
 
 	}
 
-	log.Println("Running GoPiCam on", urls)
+	logInfo.Println("Running GoPiCam on", urls)
 }

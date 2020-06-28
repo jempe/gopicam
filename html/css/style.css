@@ -168,3 +168,11 @@ div.login_popup {
     transform: translateX(-8px); }
   40%, 60% {
     transform: translateX(8px); } }
+
+canvas#preview {
+  width: 90vw;
+  height: 50vw;
+  margin: 5vw;
+  border: solid 1px #CCC;
+  border-radius: 3px; }
+

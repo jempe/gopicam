@@ -122,6 +122,7 @@ function submit_login_form(form)
 		else
 		{
 			hide_login();
+			get_preview();
 		}
 
 	}).catch(function(error)
@@ -134,12 +135,45 @@ function submit_login_form(form)
 
 function get_preview()
 {
+	// prepare request
 	let previewRequest = requestInit;
 	previewRequest["method"] = "GET";
 
+	// get data from preview api
 	fetch("/api/preview", previewRequest).then(handleResponse).then(handleJson).then(function(data)
 	{
+		console.log(data.status);
 
+		// create image
+		let preview_image = new Image();
+
+		preview_image.addEventListener('load', function() {
+
+			let preview_canvas;
+
+			if(document.getElementById("preview") == null)
+			{
+				// create canvas element if it doesn't exist
+				preview_canvas = document.createElement("canvas");
+				preview_canvas.id = "preview";
+				preview_canvas.width = preview_image.width;
+				preview_canvas.height = preview_image.height;
+
+				document.getElementById("preview_container").appendChild(preview_canvas);
+			}
+			else
+			{
+				preview_canvas = document.getElementById("preview");	
+			}
+
+			let preview_ctx = preview_canvas.getContext('2d');
+
+			preview_ctx.drawImage(preview_image, 0, 0);
+		}, false);
+
+		preview_image.src = data.image;
+
+		setTimeout(get_preview, 1000);
 	}).catch(function(error)
 	{
 		log_error('Request failed' +  error);
