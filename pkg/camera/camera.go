@@ -5,12 +5,14 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/jempe/gopicam/pkg/utils"
 )
@@ -139,4 +141,32 @@ func (camController *CamController) KillRaspiMJPEG() {
 			}
 		}
 	}
+}
+
+// Kill raspimjpeg
+func (camController *CamController) ReadFIFO() {
+	fifoMessage, err := os.OpenFile(camController.ConfigFolder+"/fifos/FIFO1", os.O_RDONLY, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Reading FIFO")
+	var fifoBuffer bytes.Buffer
+
+	for {
+		_, fifoErr := io.Copy(&fifoBuffer, fifoMessage)
+
+		if fifoErr != nil {
+			log.Fatal(fifoErr)
+			return
+		}
+
+		if fifoBuffer.Len() > 0 {
+			fmt.Println("FIFO Message:", fifoBuffer.String())
+			fifoBuffer.Reset()
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	fifoMessage.Close()
 }

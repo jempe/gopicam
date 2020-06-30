@@ -11,6 +11,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/alexedwards/scs"
@@ -181,12 +182,50 @@ func main() {
 		}
 	}
 
+	//create Folders
+	folderList := []string{"fifos", "media", "macros", "bin"}
+
+	for _, folder := range folderList {
+		folderPath := configPath + "/" + folder
+		if !utils.Exists(folderPath) {
+			logInfo.Println("create folder", folderPath)
+			// create a directory that is available for current user only
+			createDirErr := os.MkdirAll(folderPath, 0700)
+
+			if createDirErr != nil {
+				logAndExit("Error: Couldn't create the folder " + folderPath)
+			}
+
+		} else if utils.Exists(folderPath) && !utils.IsDirectory(folderPath) {
+			logAndExit("Error: The path " + folderPath + " is not a folder")
+		}
+	}
+
+	fifosList := []string{"FIFO", "FIFO1", "FIFO11"}
+
+	for _, fifo := range fifosList {
+		fifoPath := configPath + "/fifos/" + fifo
+
+		if !utils.Exists(fifoPath) {
+			logInfo.Println("create fifo", fifoPath)
+			// create a directory that is available for current user only
+			createFifoErr := syscall.Mkfifo(fifoPath, 0600)
+
+			if createFifoErr != nil {
+				logAndExit("Error: Couldn't create the fifo " + fifoPath)
+			}
+		}
+	}
+
 	showLocalIPs(serverPort, serverProtocol)
 
-	//Start Web Server
+	// read FIFO messages
+	go camController.ReadFIFO()
 
+	// Kill any raspimjpeg process and start raspimjpeg
 	go camController.StartRaspiMJPEG()
 
+	//Start Web Server
 	if *insecureServer {
 		panic(http.ListenAndServe(":"+serverPort, sessionManager.LoadAndSave(mux)))
 	} else {
