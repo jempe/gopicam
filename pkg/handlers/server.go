@@ -120,6 +120,35 @@ func (srv *Server) PreviewHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, string(responseJSON))
 }
 
+// handler that sends commands to the camera
+func (srv *Server) CameraCommandHandler(w http.ResponseWriter, r *http.Request) {
+	setSecureHeaders(w, "json")
+
+	if r.Method != http.MethodGet {
+		returnCode405(w, r)
+		return
+	}
+
+	if srv.Sessions.GetString(r.Context(), "username") != string(srv.Db.GetConfigValue("username")) {
+		returnCode401(w, r)
+		return
+	}
+
+	// initialize server response
+	response := make(map[string]string)
+
+	srv.CamController.SendCommand("ca 1")
+
+	response["status"] = "success"
+
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		srv.LogError.Println(err)
+	}
+
+	fmt.Fprintln(w, string(responseJSON))
+}
+
 func returnCode400(w http.ResponseWriter, r *http.Request) {
 	// see http://golang.org/pkg/net/http/#pkg-constants
 	w.WriteHeader(http.StatusBadRequest)

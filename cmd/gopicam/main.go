@@ -153,6 +153,7 @@ func main() {
 	mux.Handle("/", http.FileServer(http.Dir("html/")))
 	mux.HandleFunc("/api/login", srv.LoginHandler)
 	mux.HandleFunc("/api/preview", srv.PreviewHandler)
+	mux.HandleFunc("/api/command", srv.CameraCommandHandler)
 
 	// Setup Web Server
 

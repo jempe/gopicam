@@ -170,3 +170,15 @@ func (camController *CamController) ReadFIFO() {
 
 	fifoMessage.Close()
 }
+
+// Send Command to RaspiMJPEG
+func (camController *CamController) SendCommand(action string) {
+	fifo, err := os.OpenFile(camController.ConfigFolder+"/fifos/FIFO", os.O_WRONLY, os.ModeNamedPipe)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fifo.WriteString(fmt.Sprintf("%s\n", action))
+
+	fifo.Close()
+}
