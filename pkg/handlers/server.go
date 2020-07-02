@@ -103,13 +103,20 @@ func (srv *Server) PreviewHandler(w http.ResponseWriter, r *http.Request) {
 	// initialize server response
 	var response PreviewResponse
 
-	image, status, err := srv.CamController.GetPreview()
+	image, err := srv.CamController.GetPreview()
 
 	if err != nil {
 		srv.LogError.Println(err.Error())
 	}
 
 	response.Image = image
+
+	status, err := srv.CamController.GetStatus()
+
+	if err != nil {
+		srv.LogError.Println(err.Error())
+	}
+
 	response.Status = status
 
 	responseJSON, err := json.Marshal(response)
@@ -137,9 +144,27 @@ func (srv *Server) CameraCommandHandler(w http.ResponseWriter, r *http.Request) 
 	// initialize server response
 	response := make(map[string]string)
 
-	srv.CamController.SendCommand("ca 1")
+	pathCommands := make(map[string]string)
 
-	response["status"] = "success"
+	pathCommands["/api/camera/start"] = "ru 1"
+	pathCommands["/api/camera/stop"] = "ru 0"
+	pathCommands["/api/camera/record/start"] = camera.RecordStart
+	pathCommands["/api/camera/record/stop"] = camera.RecordStop
+	pathCommands["/api/camera/motion_detect/start"] = "md 1"
+	pathCommands["/api/camera/motion_detect/stop"] = "md 0"
+	pathCommands["/api/camera/timelapse/start"] = "tl 1"
+	pathCommands["/api/camera/timelapse/stop"] = "tl 0"
+	pathCommands["/api/camera/photo/take"] = "im"
+
+	raspiMJPEGCommand, ok := pathCommands[r.URL.Path]
+
+	if ok {
+		srv.CamController.SendCommand(raspiMJPEGCommand)
+
+		response["status"] = "success"
+	} else {
+		response["status"] = "error"
+	}
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {

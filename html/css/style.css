@@ -171,7 +171,6 @@ div.login_popup {
 
 canvas#preview {
   width: 90vw;
-  height: 50vw;
   margin: 5vw;
   border: solid 1px #CCC;
   border-radius: 3px; }

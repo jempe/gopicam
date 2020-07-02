@@ -133,6 +133,7 @@ function submit_login_form(form)
 	return false;
 }
 
+// preview image and camera status
 function get_preview()
 {
 	// prepare request
@@ -140,7 +141,7 @@ function get_preview()
 	previewRequest["method"] = "GET";
 
 	// get data from preview api
-	fetch("/api/preview", previewRequest).then(handleResponse).then(handleJson).then(function(data)
+	fetch("/api/camera/preview", previewRequest).then(handleResponse).then(handleJson).then(function(data)
 	{
 		console.log(data.status);
 
@@ -172,6 +173,8 @@ function get_preview()
 		}, false);
 
 		preview_image.src = data.image;
+
+		// Camera status values: md_video, md_ready, ready, video, halted, tl_md_ready 
 
 		setTimeout(get_preview, 1000);
 	}).catch(function(error)

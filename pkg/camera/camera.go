@@ -20,8 +20,15 @@ import (
 const previewFolder = "/dev/shm/mjpeg"
 const configFile = "/etc/raspimjpeg"
 
+const RecordStart = "ca 1"
+const RecordStop = "ca 0"
+
+const StatusDetectMotion = "md_ready"
+const StatusDetectMotionRecording = "md_video"
+
 type CamController struct {
-	ConfigFolder string
+	ConfigFolder        string
+	LastMotionTimestamp time.Time
 }
 
 // Prepare everything to run raspimjpeg
@@ -42,21 +49,12 @@ func (camController *CamController) Init() error {
 }
 
 // Check the Preview Path and return the image as a base64 string
-func (camController *CamController) GetPreview() (previewImage string, status string, err error) {
+func (camController *CamController) GetPreview() (previewImage string, err error) {
 	previewImagePath := previewFolder + "/cam.jpg"
-	statusPath := previewFolder + "/status_mjpeg.txt"
-
-	status = "error"
 
 	// check if Preview Image exists
 	if !utils.Exists(previewImagePath) {
 		err = errors.New("Error: The preview file doesn't exist: " + previewImagePath)
-		return
-	}
-
-	// check if Status Text file exists
-	if !utils.Exists(statusPath) {
-		err = errors.New("Error: The status file doesn't exist: " + statusPath)
 		return
 	}
 
@@ -78,6 +76,21 @@ func (camController *CamController) GetPreview() (previewImage string, status st
 	previewImage = utils.Base64Encode(imageBuffer.Bytes())
 
 	imageFile.Close()
+
+	return
+}
+
+// Check the Status Text Path and return the status
+func (camController *CamController) GetStatus() (status string, err error) {
+	statusPath := previewFolder + "/status_mjpeg.txt"
+
+	status = "error"
+
+	// check if Status Text file exists
+	if !utils.Exists(statusPath) {
+		err = errors.New("Error: The status file doesn't exist: " + statusPath)
+		return
+	}
 
 	// read status file content
 	statusContent, statusFileErr := ioutil.ReadFile(statusPath)
@@ -143,7 +156,7 @@ func (camController *CamController) KillRaspiMJPEG() {
 	}
 }
 
-// Kill raspimjpeg
+// Read FIFO
 func (camController *CamController) ReadFIFO() {
 	fifoMessage, err := os.OpenFile(camController.ConfigFolder+"/fifos/FIFO1", os.O_RDONLY, 0600)
 	if err != nil {
@@ -161,9 +174,32 @@ func (camController *CamController) ReadFIFO() {
 			return
 		}
 
+		// send command to record video
+		status, statusErr := camController.GetStatus()
+		if statusErr != nil {
+			log.Fatal(statusErr)
+			return
+		}
+
 		if fifoBuffer.Len() > 0 {
+			// raspimjpeg detected motion
 			fmt.Println("FIFO Message:", fifoBuffer.String())
 			fifoBuffer.Reset()
+
+			camController.LastMotionTimestamp = time.Now()
+
+			if status == StatusDetectMotion {
+				log.Println("Motion Detected, Start Recording")
+				camController.SendCommand(RecordStart)
+			}
+		} else if status == StatusDetectMotionRecording {
+			// stop recording video after 10 seconds
+			duration := time.Now().Sub(camController.LastMotionTimestamp)
+
+			if duration.Seconds() > 10 {
+				log.Println("Motion Detected, Stop Recording")
+				camController.SendCommand(RecordStop)
+			}
 		}
 		time.Sleep(100 * time.Millisecond)
 	}

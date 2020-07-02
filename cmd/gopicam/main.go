@@ -152,8 +152,16 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("html/")))
 	mux.HandleFunc("/api/login", srv.LoginHandler)
-	mux.HandleFunc("/api/preview", srv.PreviewHandler)
-	mux.HandleFunc("/api/command", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/preview", srv.PreviewHandler)
+	mux.HandleFunc("/api/camera/stop", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/start", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/record/stop", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/record/start", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/motion_detect/stop", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/motion_detect/start", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/timelapse/stop", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/timelapse/start", srv.CameraCommandHandler)
+	mux.HandleFunc("/api/camera/photo/take", srv.CameraCommandHandler)
 
 	// Setup Web Server
 
