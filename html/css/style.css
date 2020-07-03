@@ -26,7 +26,8 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  background: #333; }
 
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: 2px;
@@ -172,6 +173,53 @@ div.login_popup {
 canvas#preview {
   width: 90vw;
   margin: 5vw;
-  border: solid 1px #CCC;
+  border: solid 5px #CCC;
   border-radius: 3px; }
+
+#preview_container {
+  display: flex;
+  justify-content: center;
+  background: #999; }
+
+div#camera_buttons {
+  display: flex;
+  margin: 0 10vw 0 10vw;
+  width: 80vw;
+  border-radius: 0 0 15px 15px; }
+  div#camera_buttons button {
+    border: none;
+    background: #999;
+    color: #666;
+    font-size: 30px;
+    padding: 10px 0 6px 0;
+    flex-basis: 20%;
+    line-height: 1;
+    border-radius: 0;
+    border: solid 1px #666;
+    border-right: none; }
+  div#camera_buttons button:first-child {
+    border-radius: 0 0 0 15px; }
+  div#camera_buttons button:last-child {
+    border-radius: 0 0 15px 0;
+    border-right: solid 1px #666; }
+  div#camera_buttons button#record_button:after {
+    content: "videocam"; }
+  div#camera_buttons button#photo_button:after {
+    content: "insert_photo"; }
+  div#camera_buttons button#timelapse_button:after {
+    content: "timelapse"; }
+  div#camera_buttons button#motion_detect_button:after {
+    content: "directions_run"; }
+  div#camera_buttons button#power_button:after {
+    content: "power_settings_new"; }
+  div#camera_buttons button:after {
+    font-family: "Material Icons";
+    line-height: 1; }
+  div#camera_buttons button.active {
+    color: #344c74;
+    text-shadow: 0 0 3px #344c74;
+    background: #DDFBD2; }
+  div#camera_buttons button.disable {
+    opacity: 0.5;
+    pointer-events: none; }
 
