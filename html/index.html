@@ -10,16 +10,19 @@
 		</script>
 	</head>
 	<body>
-		<div id="preview_container">
-			
-		</div>
-		<div id="camera_buttons">
-			<button id="record_button" class="disable"></button>
-			<button id="photo_button"></button>
-			<button id="timelapse_button"></button>
-			<button id="motion_detect_button"></button>
-			<button id="power_button" class="active"></button>
-		</div>
+		<main>
+			<div id="preview_container">
+				
+			</div>
+			<div id="background"></div>
+			<div id="camera_buttons">
+				<button id="record_button" class="disable" onclick="send_command('record')"></button>
+				<button id="photo_button" onclick="send_command('photo')"></button>
+				<button id="timelapse_button" onclick="send_command('timelapse')"></button>
+				<button id="motion_detect_button" onclick="send_command('motion')"></button>
+				<button id="power_button" onclick="send_command('power')"></button>
+			</div>
+		</main>
 		<div class="login_popup popup">
 			<div class="overlay"></div>
 			<div class="login_form_container">

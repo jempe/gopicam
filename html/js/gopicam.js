@@ -143,6 +143,7 @@ function get_preview()
 	// get data from preview api
 	fetch("/api/camera/preview", previewRequest).then(handleResponse).then(handleJson).then(function(data)
 	{
+		document.querySelector("main").dataset.status = data.status;
 		console.log(data.status);
 
 		// create image
@@ -174,6 +175,8 @@ function get_preview()
 
 		preview_image.src = data.image;
 
+		document.getElementById("background").style.backgroundImage = "url(" + data.image + ")";
+
 		// Camera status values: md_video, md_ready, ready, video, halted, tl_md_ready 
 
 		setTimeout(get_preview, 1000);
@@ -181,6 +184,76 @@ function get_preview()
 	{
 		log_error('Request failed' +  error);
 	});
+}
+
+// send command to camera API
+function send_command(camera_command) {
+	// prepare request
+	let commandRequest = requestInit;
+	commandRequest["method"] = "GET";
+
+	let command_url = "";
+
+	if(camera_command == "power")
+	{
+		if(document.querySelector("main").dataset.status == "halted")
+		{
+			command_url = "/api/camera/start"; 
+		}
+		else
+		{
+			command_url = "/api/camera/stop";
+		}
+	}
+	else if(camera_command == "motion")
+	{
+		if(/^md_(video|ready)$/.test(document.querySelector("main").dataset.status))
+		{
+			command_url = "/api/camera/motion_detect/stop"; 
+		}
+		else
+		{
+			command_url = "/api/camera/motion_detect/start";
+		}
+	}
+	else if(camera_command == "timelapse")
+	{
+		if(/^(tl_md_video|timelapse|tl_md_ready)$/.test(document.querySelector("main").dataset.status))
+		{
+			command_url = "/api/camera/timelapse/stop"; 
+		}
+		else
+		{
+			command_url = "/api/camera/timelapse/start";
+		}
+	}
+	else if(camera_command == "record")
+	{
+		if(/^video$/.test(document.querySelector("main").dataset.status))
+		{
+			command_url = "/api/camera/record/stop"; 
+		}
+		else
+		{
+			command_url = "/api/camera/record/start";
+		}
+	}
+	else if(camera_command == "photo")
+	{
+		command_url = "/api/camera/photo/take"; 
+	}
+
+	if(command_url != "")
+	{
+		// send command to api
+		fetch(command_url, commandRequest).then(handleResponse).then(handleJson).then(function(data)
+		{
+			console.log(data);
+		}).catch(function(error)
+		{
+			log_error('Request failed' +  error);
+		});
+	}
 }
 
 get_preview();

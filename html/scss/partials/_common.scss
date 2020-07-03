@@ -120,12 +120,18 @@ button.close_button {
 .two_thirds {
 	width:66%;
 }
-
 main {
-	display:flex;
-	flex-wrap:wrap;
+	display: flex;
+	align-items: center;
 }
-
+div#background {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+	filter: blur(5px);
+}
 //forms
 label.required:after {
 	content: "*";
