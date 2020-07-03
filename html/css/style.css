@@ -107,14 +107,16 @@ button.close_button {
 
 main {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  width: 100%;
+  height: 100%; }
 
 div#background {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: top right;
   filter: blur(5px); }
 
 label.required:after {
@@ -180,11 +182,11 @@ div.login_popup {
     transform: translateX(8px); } }
 
 canvas#preview {
-  width: 100vw; }
+  width: 100%; }
 
 #preview_container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -296,11 +298,11 @@ main[data-status='video'] div#camera_buttons button#record_button {
 @media (orientation: landscape) {
   canvas#preview {
     width: auto;
-    height: 100vh; }
+    height: 100%; }
   div#camera_buttons {
     width: auto;
     left: 0;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     margin: 0 3vmin; } }
 

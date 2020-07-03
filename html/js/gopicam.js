@@ -256,4 +256,13 @@ function send_command(camera_command) {
 	}
 }
 
+function request_fullscreen()
+{
+	if (!document.fullscreenElement) {
+		document.body.requestFullscreen({navigationUI: 'show'}).catch(err => {
+			alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+		});
+	}
+}
+
 get_preview();
