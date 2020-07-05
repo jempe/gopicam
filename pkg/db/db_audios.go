@@ -11,7 +11,7 @@ import (
 
 	"github.com/boltdb/bolt"
 
-	"github.com/jempe/panki/validator"
+	"github.com/jempe/gopicam/pkg/validator"
 )
 
 type Audio struct {
