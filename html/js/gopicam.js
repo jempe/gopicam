@@ -256,12 +256,18 @@ function send_command(camera_command) {
 	}
 }
 
-function request_fullscreen()
+function toggleFullScreen()
 {
-	if (!document.fullscreenElement) {
-		document.body.requestFullscreen({navigationUI: 'show'}).catch(err => {
-			alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-		});
+	if( ! document.fullscreenElement)
+	{
+		document.body.requestFullscreen();
+	} 
+	else
+	{
+		if(document.exitFullscreen)
+		{
+			document.exitFullscreen(); 
+		}
 	}
 }
 

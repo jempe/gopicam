@@ -130,6 +130,84 @@ main[data-status='video'] {
 	}
 }
 
+div#top_buttons_container {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 12;
+	display: flex;
+	justify-content: space-between;
+
+	button#fullscreen_button {
+		font-family: "Material Icons";
+		color: white;
+		background: rgba(0, 0, 0, 0.5);
+		padding: 0;
+		border: none;
+		font-size: 7vmin;
+		width: 12vmin;
+		height: 12vmin;
+	}
+	button#fullscreen_button:after {
+		content: "fullscreen";
+	}
+	a#settings_button {
+		background: rgba(255,255,255, 0.9);
+		width: 12vmin;
+		height: 12vmin;
+		border-radius: 50%;
+		font-family: "Material Icons";
+		color: #000;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 7vmin;
+		margin: 1vmin;
+	}
+	a#settings_button:after {
+		content: "settings";
+	}
+	span#status {
+		font-family: "Material Icons";
+		font-size: 8vmin;
+		color: yellow;
+		flex-grow: 5;
+		display: flex;
+		justify-content: flex-end;
+		background: rgba(0, 0, 0, 0.5);
+		height: 12vmin;
+		align-items: center;
+	}
+
+}
+
+main[data-status='md_ready'],
+main[data-status='md_video'] {
+	span#status:before {
+		content: "directions_run";
+	}
+}
+main[data-status='md_video'] {
+	span#status:after {
+		content: "lens";
+	}
+}
+main[data-status='halted'] span#status:before {
+	content: "videocam_off";
+}
+main[data-status='ready'] span#status:before {
+	content: "videocam";
+}
+main[data-status='image'] span#status:before {
+	content: "insert_photo";
+}
+main[data-status='video'] span#status:before {
+	content: "lens";
+}
+main[data-status='timelapse'] span#status:before {
+	content: "timelapse";
+}
 
 @media (orientation: landscape) {
 	canvas#preview {
