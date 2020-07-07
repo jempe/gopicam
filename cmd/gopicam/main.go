@@ -96,7 +96,10 @@ func main() {
 				logAndExit(shellErr.Error())
 			}
 
-			validUsername, usernameError := validator.ValidateUsername(usernameInput)
+			minUsernameLength := 6
+			maxUsernameLength := 25
+
+			validUsername, usernameError := validator.ValidateUsername(usernameInput, minUsernameLength, maxUsernameLength)
 
 			// check if username is valid to continue
 			if validUsername {

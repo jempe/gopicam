@@ -51,7 +51,7 @@ func TestValidateUsername(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			valid, usernameError := ValidateUsername(tt.username)
+			valid, usernameError := ValidateUsername(tt.username, 6, 25)
 
 			if valid != tt.want {
 				t.Errorf("want %t; got %t", tt.want, valid)

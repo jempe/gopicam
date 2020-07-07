@@ -3,31 +3,44 @@ package validator
 import (
 	"errors"
 	"regexp"
+	"strconv"
 )
 
-const usernameLessThanError string = "Username should be at least 6 characters long"
-const usernameGreaterThanError string = "Username should up to 25 characters long"
-const usernameRegexError string = "Username should contains alphanumeric characters, scores and underscores only"
+const minLengthError string = "error:min_length_error"
+const maxLengthError string = "error:max_length_error"
+const alphaNumericAndDashesError string = "error:alphanumdash_error"
 
 // Validate Username Length and make sure it contains only valid characters
-func ValidateUsername(username string) (valid bool, err error) {
-
-	if len(username) < 6 {
-		err = errors.New(usernameLessThanError)
+func ValidateUsername(username string, minLength int, maxLength int) (valid bool, err error) {
+	validMinLength, errMinLength := MinLength(username, minLength)
+	if !validMinLength {
+		err = errMinLength
 		return
 	}
 
-	if len(username) > 25 {
-		err = errors.New(usernameGreaterThanError)
+	validMaxLength, errMaxLength := MaxLength(username, maxLength)
+	if !validMaxLength {
+		err = errMaxLength
 		return
 	}
 
-	usernameRegex := regexp.MustCompile(`^[a-z0-9-_]*$`)
-
-	valid = usernameRegex.MatchString(username)
+	valid, errChars := AlphaNumericAndDashes(username)
 
 	if !valid {
-		err = errors.New(usernameRegexError)
+		err = errChars
+		return
+	}
+
+	return
+}
+
+func AlphaNumericAndDashes(value string) (valid bool, err error) {
+	alphanumRegex := regexp.MustCompile(`^[a-z0-9-_]*$`)
+
+	valid = alphanumRegex.MatchString(value)
+
+	if !valid {
+		err = errors.New(alphaNumericAndDashesError)
 	}
 
 	return
@@ -46,7 +59,7 @@ func UUID(uuid string) (bool, error) {
 
 func MinLength(value string, min int) (bool, error) {
 	if len(value) < min {
-		return false, errors.New("min_length_error")
+		return false, errors.New(minLengthError + "|" + strconv.Itoa(min))
 	} else {
 		return true, nil
 	}
@@ -54,7 +67,7 @@ func MinLength(value string, min int) (bool, error) {
 
 func MaxLength(value string, max int) (bool, error) {
 	if len(value) > max {
-		return false, errors.New("max_length_error")
+		return false, errors.New(maxLengthError + "|" + strconv.Itoa(max))
 	} else {
 		return true, nil
 	}
