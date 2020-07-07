@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alexedwards/scs"
+	"github.com/alexedwards/scs/v2"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jempe/gopicam/pkg/camera"

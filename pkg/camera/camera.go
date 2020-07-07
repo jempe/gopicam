@@ -29,6 +29,8 @@ const StatusDetectMotionRecording = "md_video"
 type CamController struct {
 	ConfigFolder        string
 	LastMotionTimestamp time.Time
+	LogError            *log.Logger
+	LogInfo             *log.Logger
 }
 
 // Prepare everything to run raspimjpeg
@@ -112,11 +114,11 @@ func (camController *CamController) StartRaspiMJPEG() {
 	raspiMJPEGOutput, err := cmd.StdoutPipe()
 
 	if err != nil {
-		log.Fatal(err)
+		camController.LogError.Println(err)
 	}
 
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		camController.LogError.Println(err)
 	}
 
 	for {
@@ -127,14 +129,14 @@ func (camController *CamController) StartRaspiMJPEG() {
 	}
 
 	if err := cmd.Wait(); err != nil {
-		log.Fatal(err)
+		camController.LogError.Println(err)
 	}
 }
 
 // Kill raspimjpeg
 func (camController *CamController) KillRaspiMJPEG() {
 	cmd := exec.Command("ps")
-	log.Printf("Search RaspiMJPEG processes")
+	camController.LogInfo.Println("Search RaspiMJPEG processes")
 	stdoutStderr, err := cmd.CombinedOutput()
 
 	if err == nil {
@@ -146,10 +148,10 @@ func (camController *CamController) KillRaspiMJPEG() {
 				pid := pidRegex.FindString(strings.TrimLeft(psLine, " "))
 
 				killCmd := exec.Command("kill", "-9", pid)
-				log.Println("Killing process", pid)
+				camController.LogInfo.Println("Killing process", pid)
 				err := killCmd.Run()
 				if err != nil {
-					log.Println("Command finished with error:", err)
+					camController.LogError.Println("Command finished with error:", err)
 				}
 			}
 		}
@@ -160,24 +162,24 @@ func (camController *CamController) KillRaspiMJPEG() {
 func (camController *CamController) ReadFIFO() {
 	fifoMessage, err := os.OpenFile(camController.ConfigFolder+"/fifos/FIFO1", os.O_RDONLY, 0600)
 	if err != nil {
-		log.Fatal(err)
+		camController.LogError.Println(err)
 	}
 
-	fmt.Println("Reading FIFO")
+	camController.LogInfo.Println("Reading FIFO")
 	var fifoBuffer bytes.Buffer
 
 	for {
 		_, fifoErr := io.Copy(&fifoBuffer, fifoMessage)
 
 		if fifoErr != nil {
-			log.Fatal(fifoErr)
+			camController.LogError.Println(fifoErr)
 			return
 		}
 
 		// send command to record video
 		status, statusErr := camController.GetStatus()
 		if statusErr != nil {
-			log.Fatal(statusErr)
+			camController.LogError.Println(statusErr)
 			return
 		}
 
@@ -189,7 +191,7 @@ func (camController *CamController) ReadFIFO() {
 			camController.LastMotionTimestamp = time.Now()
 
 			if status == StatusDetectMotion {
-				log.Println("Motion Detected, Start Recording")
+				camController.LogInfo.Println("Motion Detected, Start Recording")
 				camController.SendCommand(RecordStart)
 			}
 		} else if status == StatusDetectMotionRecording {
@@ -197,7 +199,7 @@ func (camController *CamController) ReadFIFO() {
 			duration := time.Now().Sub(camController.LastMotionTimestamp)
 
 			if duration.Seconds() > 10 {
-				log.Println("Motion Detected, Stop Recording")
+				camController.LogInfo.Println("Motion Detected, Stop Recording")
 				camController.SendCommand(RecordStop)
 			}
 		}
@@ -211,7 +213,7 @@ func (camController *CamController) ReadFIFO() {
 func (camController *CamController) SendCommand(action string) {
 	fifo, err := os.OpenFile(camController.ConfigFolder+"/fifos/FIFO", os.O_WRONLY, os.ModeNamedPipe)
 	if err != nil {
-		log.Fatal(err)
+		camController.LogError.Println(err)
 	}
 
 	fifo.WriteString(fmt.Sprintf("%s\n", action))

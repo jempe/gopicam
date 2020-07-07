@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/alexedwards/scs"
+	"github.com/alexedwards/scs/v2"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jempe/gopicam/pkg/camera"
@@ -137,7 +137,7 @@ func main() {
 	}
 
 	// declare camera controller
-	camController := &camera.CamController{ConfigFolder: configPath}
+	camController := &camera.CamController{ConfigFolder: configPath, LogInfo: logInfo, LogError: logError}
 
 	// Initialize Camera Controller to create Required folders for preview
 	camError := camController.Init()
