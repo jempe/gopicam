@@ -34,8 +34,9 @@ func ValidateUsername(username string, minLength int, maxLength int) (valid bool
 	return
 }
 
+//Validate that input contains alphanumeric characters dashes or underscores only
 func AlphaNumericAndDashes(value string) (valid bool, err error) {
-	alphanumRegex := regexp.MustCompile(`^[a-z0-9-_]*$`)
+	alphanumRegex := regexp.MustCompile(`^[a-z0-9-_]+$`)
 
 	valid = alphanumRegex.MatchString(value)
 
@@ -46,6 +47,7 @@ func AlphaNumericAndDashes(value string) (valid bool, err error) {
 	return
 }
 
+//Validate UUID format
 func UUID(uuid string) (bool, error) {
 	validUUID := regexp.MustCompile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 
@@ -57,6 +59,7 @@ func UUID(uuid string) (bool, error) {
 	}
 }
 
+//Check if Length of string is at least a specific value
 func MinLength(value string, min int) (bool, error) {
 	if len(value) < min {
 		return false, errors.New(minLengthError + "|" + strconv.Itoa(min))
@@ -65,6 +68,7 @@ func MinLength(value string, min int) (bool, error) {
 	}
 }
 
+//Check if Length of string is at most a specific value
 func MaxLength(value string, max int) (bool, error) {
 	if len(value) > max {
 		return false, errors.New(maxLengthError + "|" + strconv.Itoa(max))
@@ -73,6 +77,7 @@ func MaxLength(value string, max int) (bool, error) {
 	}
 }
 
+// Check if email is valid
 func Email(email string) (bool, error) {
 	validEmail := regexp.MustCompile("^(((([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+(\\.([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|\\.|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.)+(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.?$")
 
