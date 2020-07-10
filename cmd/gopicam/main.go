@@ -29,14 +29,23 @@ var resetAdmin = flag.Bool("reset", false, "Reset admin username and password")
 var showHelp = flag.Bool("help", false, "Show Help")
 var insecureServer = flag.Bool("insecure", false, "Run web server without HTTPS")
 var port = flag.Int("port", 443, "Web Server Port")
+var debugMode = flag.Bool("debug", false, "Print all Debug messages")
 
 var logError *log.Logger
 var logInfo *log.Logger
+var logDebug *log.Logger
 
 func main() {
 	// Initialize loggers
 	logError = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 	logInfo = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+
+	if *debugMode {
+		logDebug = log.New(os.Stdout, "DEBUG\t", log.Ldate|log.Ltime)
+	} else {
+		logDebug = log.New(ioutil.Discard, "", 0)
+	}
 
 	flag.Parse()
 
