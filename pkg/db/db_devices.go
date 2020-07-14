@@ -66,16 +66,13 @@ func (boltdb *DB) InsertDevice(device Device, fields []string) (deviceID string,
 		device.ID = deviceID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := device.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		deviceData.ID = device.ID
-
+	validID, validIDErr := device.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	deviceData.ID = device.ID
 	if emptyOrContains(fields, "Key") {
 		validKey, validKeyErr := device.ValidKeyDefault()
 		if !validKey {
@@ -84,7 +81,6 @@ func (boltdb *DB) InsertDevice(device Device, fields []string) (deviceID string,
 		}
 
 		deviceData.Key = device.Key
-
 	}
 	if emptyOrContains(fields, "Name") {
 		validName, validNameErr := device.ValidNameDefault()
@@ -94,7 +90,6 @@ func (boltdb *DB) InsertDevice(device Device, fields []string) (deviceID string,
 		}
 
 		deviceData.Name = device.Name
-
 	}
 	if emptyOrContains(fields, "Secret") {
 		validSecret, validSecretErr := device.ValidSecretDefault()
@@ -104,7 +99,6 @@ func (boltdb *DB) InsertDevice(device Device, fields []string) (deviceID string,
 		}
 
 		deviceData.Secret = device.Secret
-
 	}
 
 	existDeviceData, _ := boltdb.GetDevice(device.ID)
@@ -174,16 +168,13 @@ func (boltdb *DB) UpdateDevice(device Device, fields []string) (rowsAffected int
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := device.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		deviceData.ID = device.ID
-
+	validID, validIDErr := device.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	deviceData.ID = device.ID
 	if emptyOrContains(fields, "Key") {
 		validKey, validKeyErr := device.ValidKeyDefault()
 		if !validKey {
@@ -192,7 +183,6 @@ func (boltdb *DB) UpdateDevice(device Device, fields []string) (rowsAffected int
 		}
 
 		deviceData.Key = device.Key
-
 	}
 	if emptyOrContains(fields, "Name") {
 		validName, validNameErr := device.ValidNameDefault()
@@ -202,7 +192,6 @@ func (boltdb *DB) UpdateDevice(device Device, fields []string) (rowsAffected int
 		}
 
 		deviceData.Name = device.Name
-
 	}
 	if emptyOrContains(fields, "Secret") {
 		validSecret, validSecretErr := device.ValidSecretDefault()
@@ -212,7 +201,6 @@ func (boltdb *DB) UpdateDevice(device Device, fields []string) (rowsAffected int
 		}
 
 		deviceData.Secret = device.Secret
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {

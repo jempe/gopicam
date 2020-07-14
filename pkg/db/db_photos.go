@@ -68,16 +68,13 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		photo.ID = photoID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := photo.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		photoData.ID = photo.ID
-
+	validID, validIDErr := photo.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	photoData.ID = photo.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := photo.ValidFileTypeDefault()
 		if !validFileType {
@@ -86,7 +83,6 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		}
 
 		photoData.FileType = photo.FileType
-
 	}
 	if emptyOrContains(fields, "Width") {
 		validWidth, validWidthErr := photo.ValidWidthDefault()
@@ -96,7 +92,6 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		}
 
 		photoData.Width = photo.Width
-
 	}
 	if emptyOrContains(fields, "Height") {
 		validHeight, validHeightErr := photo.ValidHeightDefault()
@@ -106,7 +101,6 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		}
 
 		photoData.Height = photo.Height
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := photo.ValidSizeDefault()
@@ -116,7 +110,6 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		}
 
 		photoData.Size = photo.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := photo.ValidDeviceTimeDefault()
@@ -126,7 +119,6 @@ func (boltdb *DB) InsertPhoto(photo Photo, fields []string) (photoID string, err
 		}
 
 		photoData.DeviceTime = photo.DeviceTime
-
 	}
 
 	existPhotoData, _ := boltdb.GetPhoto(photo.ID)
@@ -196,16 +188,13 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := photo.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		photoData.ID = photo.ID
-
+	validID, validIDErr := photo.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	photoData.ID = photo.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := photo.ValidFileTypeDefault()
 		if !validFileType {
@@ -214,7 +203,6 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		}
 
 		photoData.FileType = photo.FileType
-
 	}
 	if emptyOrContains(fields, "Width") {
 		validWidth, validWidthErr := photo.ValidWidthDefault()
@@ -224,7 +212,6 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		}
 
 		photoData.Width = photo.Width
-
 	}
 	if emptyOrContains(fields, "Height") {
 		validHeight, validHeightErr := photo.ValidHeightDefault()
@@ -234,7 +221,6 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		}
 
 		photoData.Height = photo.Height
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := photo.ValidSizeDefault()
@@ -244,7 +230,6 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		}
 
 		photoData.Size = photo.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := photo.ValidDeviceTimeDefault()
@@ -254,7 +239,6 @@ func (boltdb *DB) UpdatePhoto(photo Photo, fields []string) (rowsAffected int64,
 		}
 
 		photoData.DeviceTime = photo.DeviceTime
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {

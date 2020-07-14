@@ -105,5 +105,4 @@ func TestInitDb(t *testing.T) {
 			}
 		})
 	}
-
 }

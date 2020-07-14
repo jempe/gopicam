@@ -69,16 +69,13 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		video.ID = videoID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := video.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		videoData.ID = video.ID
-
+	validID, validIDErr := video.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	videoData.ID = video.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := video.ValidFileTypeDefault()
 		if !validFileType {
@@ -87,7 +84,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.FileType = video.FileType
-
 	}
 	if emptyOrContains(fields, "Width") {
 		validWidth, validWidthErr := video.ValidWidthDefault()
@@ -97,7 +93,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.Width = video.Width
-
 	}
 	if emptyOrContains(fields, "Height") {
 		validHeight, validHeightErr := video.ValidHeightDefault()
@@ -107,7 +102,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.Height = video.Height
-
 	}
 	if emptyOrContains(fields, "Length") {
 		validLength, validLengthErr := video.ValidLengthDefault()
@@ -117,7 +111,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.Length = video.Length
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := video.ValidSizeDefault()
@@ -127,7 +120,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.Size = video.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := video.ValidDeviceTimeDefault()
@@ -137,7 +129,6 @@ func (boltdb *DB) InsertVideo(video Video, fields []string) (videoID string, err
 		}
 
 		videoData.DeviceTime = video.DeviceTime
-
 	}
 
 	existVideoData, _ := boltdb.GetVideo(video.ID)
@@ -207,16 +198,13 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := video.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		videoData.ID = video.ID
-
+	validID, validIDErr := video.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	videoData.ID = video.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := video.ValidFileTypeDefault()
 		if !validFileType {
@@ -225,7 +213,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.FileType = video.FileType
-
 	}
 	if emptyOrContains(fields, "Width") {
 		validWidth, validWidthErr := video.ValidWidthDefault()
@@ -235,7 +222,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.Width = video.Width
-
 	}
 	if emptyOrContains(fields, "Height") {
 		validHeight, validHeightErr := video.ValidHeightDefault()
@@ -245,7 +231,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.Height = video.Height
-
 	}
 	if emptyOrContains(fields, "Length") {
 		validLength, validLengthErr := video.ValidLengthDefault()
@@ -255,7 +240,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.Length = video.Length
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := video.ValidSizeDefault()
@@ -265,7 +249,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.Size = video.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := video.ValidDeviceTimeDefault()
@@ -275,7 +258,6 @@ func (boltdb *DB) UpdateVideo(video Video, fields []string) (rowsAffected int64,
 		}
 
 		videoData.DeviceTime = video.DeviceTime
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {

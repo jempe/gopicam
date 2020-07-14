@@ -73,16 +73,13 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		location.ID = locationID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := location.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		locationData.ID = location.ID
-
+	validID, validIDErr := location.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	locationData.ID = location.ID
 	if emptyOrContains(fields, "DeviceIndex") {
 		validDeviceIndex, validDeviceIndexErr := location.ValidDeviceIndexDefault()
 		if !validDeviceIndex {
@@ -91,7 +88,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.DeviceIndex = location.DeviceIndex
-
 	}
 	if emptyOrContains(fields, "Device") {
 		validDevice, validDeviceErr := location.ValidDeviceDefault()
@@ -101,7 +97,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Device = location.Device
-
 	}
 	if emptyOrContains(fields, "Latitude") {
 		validLatitude, validLatitudeErr := location.ValidLatitudeDefault()
@@ -111,7 +106,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Latitude = location.Latitude
-
 	}
 	if emptyOrContains(fields, "Longitude") {
 		validLongitude, validLongitudeErr := location.ValidLongitudeDefault()
@@ -121,7 +115,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Longitude = location.Longitude
-
 	}
 	if emptyOrContains(fields, "Accuracy") {
 		validAccuracy, validAccuracyErr := location.ValidAccuracyDefault()
@@ -131,7 +124,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Accuracy = location.Accuracy
-
 	}
 	if emptyOrContains(fields, "Altitude") {
 		validAltitude, validAltitudeErr := location.ValidAltitudeDefault()
@@ -141,7 +133,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Altitude = location.Altitude
-
 	}
 	if emptyOrContains(fields, "Speed") {
 		validSpeed, validSpeedErr := location.ValidSpeedDefault()
@@ -151,7 +142,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Speed = location.Speed
-
 	}
 	if emptyOrContains(fields, "Battery") {
 		validBattery, validBatteryErr := location.ValidBatteryDefault()
@@ -161,7 +151,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Battery = location.Battery
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := location.ValidDeviceTimeDefault()
@@ -171,7 +160,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.DeviceTime = location.DeviceTime
-
 	}
 	if emptyOrContains(fields, "BearingTo") {
 		validBearingTo, validBearingToErr := location.ValidBearingToDefault()
@@ -181,7 +169,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.BearingTo = location.BearingTo
-
 	}
 	if emptyOrContains(fields, "Wifi") {
 		validWifi, validWifiErr := location.ValidWifiDefault()
@@ -191,7 +178,6 @@ func (boltdb *DB) InsertLocation(location Location, fields []string) (locationID
 		}
 
 		locationData.Wifi = location.Wifi
-
 	}
 
 	existLocationData, _ := boltdb.GetLocation(location.ID)
@@ -260,16 +246,13 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := location.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		locationData.ID = location.ID
-
+	validID, validIDErr := location.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	locationData.ID = location.ID
 	if emptyOrContains(fields, "DeviceIndex") {
 		validDeviceIndex, validDeviceIndexErr := location.ValidDeviceIndexDefault()
 		if !validDeviceIndex {
@@ -278,7 +261,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.DeviceIndex = location.DeviceIndex
-
 	}
 	if emptyOrContains(fields, "Device") {
 		validDevice, validDeviceErr := location.ValidDeviceDefault()
@@ -288,7 +270,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Device = location.Device
-
 	}
 	if emptyOrContains(fields, "Latitude") {
 		validLatitude, validLatitudeErr := location.ValidLatitudeDefault()
@@ -298,7 +279,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Latitude = location.Latitude
-
 	}
 	if emptyOrContains(fields, "Longitude") {
 		validLongitude, validLongitudeErr := location.ValidLongitudeDefault()
@@ -308,7 +288,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Longitude = location.Longitude
-
 	}
 	if emptyOrContains(fields, "Accuracy") {
 		validAccuracy, validAccuracyErr := location.ValidAccuracyDefault()
@@ -318,7 +297,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Accuracy = location.Accuracy
-
 	}
 	if emptyOrContains(fields, "Altitude") {
 		validAltitude, validAltitudeErr := location.ValidAltitudeDefault()
@@ -328,7 +306,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Altitude = location.Altitude
-
 	}
 	if emptyOrContains(fields, "Speed") {
 		validSpeed, validSpeedErr := location.ValidSpeedDefault()
@@ -338,7 +315,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Speed = location.Speed
-
 	}
 	if emptyOrContains(fields, "Battery") {
 		validBattery, validBatteryErr := location.ValidBatteryDefault()
@@ -348,7 +324,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Battery = location.Battery
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := location.ValidDeviceTimeDefault()
@@ -358,7 +333,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.DeviceTime = location.DeviceTime
-
 	}
 	if emptyOrContains(fields, "BearingTo") {
 		validBearingTo, validBearingToErr := location.ValidBearingToDefault()
@@ -368,7 +342,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.BearingTo = location.BearingTo
-
 	}
 	if emptyOrContains(fields, "Wifi") {
 		validWifi, validWifiErr := location.ValidWifiDefault()
@@ -378,7 +351,6 @@ func (boltdb *DB) UpdateLocation(location Location, fields []string) (rowsAffect
 		}
 
 		locationData.Wifi = location.Wifi
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {

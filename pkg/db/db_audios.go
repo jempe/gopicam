@@ -67,16 +67,13 @@ func (boltdb *DB) InsertAudio(audio Audio, fields []string) (audioID string, err
 		audio.ID = audioID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := audio.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		audioData.ID = audio.ID
-
+	validID, validIDErr := audio.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	audioData.ID = audio.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := audio.ValidFileTypeDefault()
 		if !validFileType {
@@ -85,7 +82,6 @@ func (boltdb *DB) InsertAudio(audio Audio, fields []string) (audioID string, err
 		}
 
 		audioData.FileType = audio.FileType
-
 	}
 	if emptyOrContains(fields, "Length") {
 		validLength, validLengthErr := audio.ValidLengthDefault()
@@ -95,7 +91,6 @@ func (boltdb *DB) InsertAudio(audio Audio, fields []string) (audioID string, err
 		}
 
 		audioData.Length = audio.Length
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := audio.ValidSizeDefault()
@@ -105,7 +100,6 @@ func (boltdb *DB) InsertAudio(audio Audio, fields []string) (audioID string, err
 		}
 
 		audioData.Size = audio.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := audio.ValidDeviceTimeDefault()
@@ -115,7 +109,6 @@ func (boltdb *DB) InsertAudio(audio Audio, fields []string) (audioID string, err
 		}
 
 		audioData.DeviceTime = audio.DeviceTime
-
 	}
 
 	existAudioData, _ := boltdb.GetAudio(audio.ID)
@@ -185,16 +178,13 @@ func (boltdb *DB) UpdateAudio(audio Audio, fields []string) (rowsAffected int64,
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := audio.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		audioData.ID = audio.ID
-
+	validID, validIDErr := audio.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	audioData.ID = audio.ID
 	if emptyOrContains(fields, "FileType") {
 		validFileType, validFileTypeErr := audio.ValidFileTypeDefault()
 		if !validFileType {
@@ -203,7 +193,6 @@ func (boltdb *DB) UpdateAudio(audio Audio, fields []string) (rowsAffected int64,
 		}
 
 		audioData.FileType = audio.FileType
-
 	}
 	if emptyOrContains(fields, "Length") {
 		validLength, validLengthErr := audio.ValidLengthDefault()
@@ -213,7 +202,6 @@ func (boltdb *DB) UpdateAudio(audio Audio, fields []string) (rowsAffected int64,
 		}
 
 		audioData.Length = audio.Length
-
 	}
 	if emptyOrContains(fields, "Size") {
 		validSize, validSizeErr := audio.ValidSizeDefault()
@@ -223,7 +211,6 @@ func (boltdb *DB) UpdateAudio(audio Audio, fields []string) (rowsAffected int64,
 		}
 
 		audioData.Size = audio.Size
-
 	}
 	if emptyOrContains(fields, "DeviceTime") {
 		validDeviceTime, validDeviceTimeErr := audio.ValidDeviceTimeDefault()
@@ -233,7 +220,6 @@ func (boltdb *DB) UpdateAudio(audio Audio, fields []string) (rowsAffected int64,
 		}
 
 		audioData.DeviceTime = audio.DeviceTime
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {

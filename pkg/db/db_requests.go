@@ -65,16 +65,13 @@ func (boltdb *DB) InsertRequest(request Request, fields []string) (requestID str
 		request.ID = requestID
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := request.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		requestData.ID = request.ID
-
+	validID, validIDErr := request.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	requestData.ID = request.ID
 	if emptyOrContains(fields, "FromDevice") {
 		validFromDevice, validFromDeviceErr := request.ValidFromDeviceDefault()
 		if !validFromDevice {
@@ -83,7 +80,6 @@ func (boltdb *DB) InsertRequest(request Request, fields []string) (requestID str
 		}
 
 		requestData.FromDevice = request.FromDevice
-
 	}
 	if emptyOrContains(fields, "Data") {
 		validData, validDataErr := request.ValidDataDefault()
@@ -93,7 +89,6 @@ func (boltdb *DB) InsertRequest(request Request, fields []string) (requestID str
 		}
 
 		requestData.Data = request.Data
-
 	}
 	if emptyOrContains(fields, "IP") {
 		validIP, validIPErr := request.ValidIPDefault()
@@ -103,7 +98,6 @@ func (boltdb *DB) InsertRequest(request Request, fields []string) (requestID str
 		}
 
 		requestData.IP = request.IP
-
 	}
 
 	existRequestData, _ := boltdb.GetRequest(request.ID)
@@ -172,16 +166,13 @@ func (boltdb *DB) UpdateRequest(request Request, fields []string) (rowsAffected 
 		return
 	}
 
-	if emptyOrContains(fields, "ID") {
-		validID, validIDErr := request.ValidIDDefault()
-		if !validID {
-			err = validIDErr
-			return
-		}
-
-		requestData.ID = request.ID
-
+	validID, validIDErr := request.ValidIDDefault()
+	if !validID {
+		err = validIDErr
+		return
 	}
+
+	requestData.ID = request.ID
 	if emptyOrContains(fields, "FromDevice") {
 		validFromDevice, validFromDeviceErr := request.ValidFromDeviceDefault()
 		if !validFromDevice {
@@ -190,7 +181,6 @@ func (boltdb *DB) UpdateRequest(request Request, fields []string) (rowsAffected 
 		}
 
 		requestData.FromDevice = request.FromDevice
-
 	}
 	if emptyOrContains(fields, "Data") {
 		validData, validDataErr := request.ValidDataDefault()
@@ -200,7 +190,6 @@ func (boltdb *DB) UpdateRequest(request Request, fields []string) (rowsAffected 
 		}
 
 		requestData.Data = request.Data
-
 	}
 	if emptyOrContains(fields, "IP") {
 		validIP, validIPErr := request.ValidIPDefault()
@@ -210,7 +199,6 @@ func (boltdb *DB) UpdateRequest(request Request, fields []string) (rowsAffected 
 		}
 
 		requestData.IP = request.IP
-
 	}
 
 	err = boltdb.Db.Update(func(tx *bolt.Tx) error {
