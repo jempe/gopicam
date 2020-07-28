@@ -145,6 +145,10 @@ func emptyOrContains(haystack []string, needle string) bool {
 		return true
 	}
 
+	return Contains(haystack, needle)
+}
+
+func Contains(haystack []string, needle string) bool {
 	for _, field := range haystack {
 		if field == needle {
 			return true

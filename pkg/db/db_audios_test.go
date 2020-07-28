@@ -80,6 +80,8 @@ func TestAudioDb(t *testing.T) {
 
 	// TODO tests with every type of field error
 
+	var insertedAudioListIDs []string
+
 	for _, tt := range tests {
 		// Test if DB file has been created
 		t.Run(tt.name, func(t *testing.T) {
@@ -92,6 +94,8 @@ func TestAudioDb(t *testing.T) {
 					t.Errorf("Error saving item")
 				}
 			} else {
+
+				insertedAudioListIDs = append(insertedAudioListIDs, audioID)
 
 				savedAudio, err := database.GetAudio(audioID)
 
@@ -232,6 +236,19 @@ func TestAudioDb(t *testing.T) {
 						t.Errorf("Updated was not saved correctly")
 					}
 				}
+
+			}
+
+			filters := Filters{
+				Operator: "AND",
+				Conditions{Condition{}},
+			}
+
+			allItems, totalItems, err := database.GetAudioList(0, len(insertedAudioListIDs), filters, []string{}, SortBy{Field: "ID", Direction: "ASC"})
+
+			if err != nil || totalItems != len(insertedAudioListIDs) || len(allItems) != len(insertedAudioListIDs) {
+				t.Errorf("Error getting Audio List")
+			} else {
 
 			}
 		})

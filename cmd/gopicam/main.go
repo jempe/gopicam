@@ -36,6 +36,8 @@ var logInfo *log.Logger
 var logDebug *log.Logger
 
 func main() {
+	flag.Parse()
+
 	// Initialize loggers
 	logError = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
@@ -46,8 +48,6 @@ func main() {
 	} else {
 		logDebug = log.New(ioutil.Discard, "", 0)
 	}
-
-	flag.Parse()
 
 	// if help argument is present show flag Defaults
 	if *showHelp {

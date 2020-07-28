@@ -1,0 +1,5 @@
+echo 'net.ipv4.ip_unprivileged_port_start=443' > ~/50-unprivileged-ports.conf
+sudo chown root:root ~/50-unprivileged-ports.conf
+sudo mv ~/50-unprivileged-ports.conf /etc/sysctl.d/50-unprivileged-ports.conf
+
+sudo sysctl --system
