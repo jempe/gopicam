@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"embed"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -34,6 +35,10 @@ var debugMode = flag.Bool("debug", false, "Print all Debug messages")
 var logError *log.Logger
 var logInfo *log.Logger
 var logDebug *log.Logger
+
+//go:embed html/*
+
+var content embed.FS
 
 func main() {
 	flag.Parse()
@@ -162,7 +167,7 @@ func main() {
 
 	// Handler to serve HTML Files
 	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.Dir("html/")))
+	mux.Handle("/", http.FileServer(http.FS(content)))
 	mux.HandleFunc("/api/login", srv.LoginHandler)
 	mux.HandleFunc("/api/camera/preview", srv.PreviewHandler)
 	mux.HandleFunc("/api/camera/stop", srv.CameraCommandHandler)

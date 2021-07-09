@@ -1,6 +1,6 @@
 module github.com/jempe/gopicam
 
-go 1.14
+go 1.16
 
 require (
 	github.com/alexedwards/scs/v2 v2.3.1
