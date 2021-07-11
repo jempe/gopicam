@@ -5,6 +5,7 @@ import (
 	"embed"
 	"flag"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"net"
@@ -167,7 +168,7 @@ func main() {
 
 	// Handler to serve HTML Files
 	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.FS(content)))
+	mux.Handle("/", http.FileServer(getHTMLFiles()))
 	mux.HandleFunc("/api/login", srv.LoginHandler)
 	mux.HandleFunc("/api/camera/preview", srv.PreviewHandler)
 	mux.HandleFunc("/api/camera/stop", srv.CameraCommandHandler)
@@ -257,6 +258,14 @@ func main() {
 	} else {
 		panic(http.ListenAndServeTLS(":"+serverPort, serverCertFile, serverKeyFile, sessionManager.LoadAndSave(mux)))
 	}
+}
+
+func getHTMLFiles() http.FileSystem {
+	fsys, err := fs.Sub(content, "html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return http.FS(fsys)
 }
 
 // Shell Ask Question and return response
