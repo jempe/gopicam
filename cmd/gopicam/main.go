@@ -16,7 +16,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/alexedwards/scs/boltstore"
 	"github.com/alexedwards/scs/v2"
+	"go.etcd.io/bbolt"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jempe/gopicam/pkg/camera"
@@ -84,6 +86,13 @@ func main() {
 	}
 
 	dbPath := configPath + "/gopicam.db"
+	sessionsDBPath := configPath + "/sessions.db"
+
+	sessionsDB, sessionsDBErr := bbolt.Open(sessionsDBPath, 0600, nil)
+	if sessionsDBErr != nil {
+		logAndExit(sessionsDBErr.Error())
+	}
+	defer sessionsDB.Close()
 
 	database := &db.DB{Path: dbPath}
 
@@ -95,6 +104,8 @@ func main() {
 	sessionManager.Cookie.Persist = true
 	sessionManager.Cookie.SameSite = http.SameSiteStrictMode
 	sessionManager.Cookie.Secure = true
+	sessionManager.Store = boltstore.NewWithCleanupInterval(sessionsDB, 20*time.Minute)
+	sessionManager.Lifetime = 56 * time.Hour
 
 	if err != nil {
 		logAndExit("Couldn't create the DB")
