@@ -2,7 +2,14 @@
 
 sudo apt install supervisor
 
-sudo adduser webcam
+ARCH=`arch`
+
+if [ -d /home/webcam];
+then
+	echo "user webcam exists"
+else
+	sudo adduser webcam
+fi
 
 sudo adduser webcam video
 
@@ -12,12 +19,11 @@ sudo mv ~/50-unprivileged-ports.conf /etc/sysctl.d/50-unprivileged-ports.conf
 
 sudo sysctl --system
 
-
 sudo cp shell_scripts/raspimjpeg /etc/
 
 sudo su webcam -c 'mkdir /home/webcam/bin'
 
-sudo su webcam -c 'cp bin/gopicam /home/webcam/bin'
+sudo su webcam -c "cp bin/gopicam_$ARCH /home/webcam/bin/gopicam"
 
 sudo cp shell_scripts/gopicam.conf /etc/supervisor/conf.d/
 

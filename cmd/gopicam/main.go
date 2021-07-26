@@ -99,13 +99,13 @@ func main() {
 	err := database.InitDb()
 
 	sessionManager := scs.New()
-	sessionManager.IdleTimeout = 20 * time.Minute
+	sessionManager.IdleTimeout = 10000 * time.Hour
 	sessionManager.Cookie.HttpOnly = true
 	sessionManager.Cookie.Persist = true
 	sessionManager.Cookie.SameSite = http.SameSiteStrictMode
 	sessionManager.Cookie.Secure = true
-	sessionManager.Store = boltstore.NewWithCleanupInterval(sessionsDB, 20*time.Minute)
-	sessionManager.Lifetime = 56 * time.Hour
+	sessionManager.Store = boltstore.NewWithCleanupInterval(sessionsDB, 10000*time.Hour)
+	sessionManager.Lifetime = 20000 * time.Hour
 
 	if err != nil {
 		logAndExit("Couldn't create the DB")

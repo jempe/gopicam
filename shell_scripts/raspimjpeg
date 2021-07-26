@@ -101,7 +101,7 @@ motion_external false
 vector_preview false
 vector_mode ?
 motion_noise 1010
-motion_threshold 250
+motion_threshold 200
 motion_clip 0
 motion_image
 motion_initframes 0
