@@ -1,6 +1,6 @@
 # GoPiCam
 
-GoPiCam is a web-based interface for managing and controlling a Raspberry Pi camera, inspired by the RPi-Cam-Web-Interface project. Unlike the original, GoPiCam is implemented in Golang, which eliminates the need to install additional software like PHP or a database on the Raspberry Pi.
+GoPiCam is a web-based interface for managing and controlling a Raspberry Pi camera using RaspiMJPEG, inspired by the RPi-Cam-Web-Interface project. Unlike the original, GoPiCam is implemented in Golang, which eliminates the need to install additional software like PHP or a database on the Raspberry Pi.
 
 ## Features
 
