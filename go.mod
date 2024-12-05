@@ -8,5 +8,5 @@ require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/google/uuid v1.1.1
 	go.etcd.io/bbolt v1.3.6
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/crypto v0.1.0
 )
